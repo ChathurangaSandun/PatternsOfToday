@@ -8,9 +8,16 @@ namespace Singleton.Controllers
     [ApiController]
     public class CounterController : ControllerBase
     {
+        private readonly ISingletonService _singleton;
+
+        public CounterController(ISingletonService singleton)
+        {
+            _singleton = singleton;
+        }
+
         public ActionResult<CounterResponse> Get()
         {
-            return Ok(new CounterResponse { Number = SingletonService.Instance.GetNextNumber() });
+            return Ok(new CounterResponse { Number = _singleton.GetNextNumber() });
         }
     }
 }

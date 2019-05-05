@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Singleton.Services
 {
-    public class SingletonService
+    public class SingletonService : ISingletonService
     {
         private long _counter;
-        
-        private static Lazy<SingletonService> _instance = new Lazy<SingletonService>(new SingletonService());
-        public static SingletonService Instance => _instance.Value;
 
-        private SingletonService()
+        public SingletonService(ILogger<SingletonService> logger)
         {
-            Console.WriteLine($"{nameof(SingletonService)} initialized.");
+            logger.LogInformation($"{nameof(SingletonService)} initialized");
         }
 
         public long GetNextNumber()
