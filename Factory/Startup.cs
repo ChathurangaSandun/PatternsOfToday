@@ -1,4 +1,6 @@
-﻿using Factory.Services;
+﻿using System;
+using Factory.Services;
+using Factory.Services.Memberships;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +27,19 @@ namespace Factory
 
             services
                 .AddTransient<IUserService, UserService>()
-                .AddTransient<IMembershipFactory, MembershipFactory>();
+                .AddTransient<IMembershipFactory, MembershipFactory>()
+
+                .AddTransient<FreeMembership>()
+                .AddSingleton<Func<FreeMembership>>(x => x.GetService<FreeMembership>)
+
+                .AddTransient<BronzeMembership>()
+                .AddSingleton<Func<BronzeMembership>>(x => x.GetService<BronzeMembership>)
+
+                .AddTransient<SilverMembership>()
+                .AddSingleton<Func<SilverMembership>>(x => x.GetService<SilverMembership>)
+
+                .AddTransient<GoldMembership>()
+                .AddSingleton<Func<GoldMembership>>(x => x.GetService<GoldMembership>);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
