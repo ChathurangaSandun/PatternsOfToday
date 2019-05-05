@@ -1,4 +1,5 @@
-﻿using ChainOfResponsibility.Processors;
+﻿using System.Collections.Generic;
+using ChainOfResponsibility.Processors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChainOfResponsibility.Controllers
@@ -7,17 +8,18 @@ namespace ChainOfResponsibility.Controllers
     [ApiController]
     public class JokesController : ControllerBase
     {
+        private readonly IEnumerable<IJokeProcessor> _processors;
+
+        public JokesController(IEnumerable<IJokeProcessor> processors)
+        {
+            _processors = processors;
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            var processors = new IJokeProcessor[]
-            {
-                new DadJokeProcessor(),
-                new ChuckNorrisJokeProcessor()
-            };
-
-            foreach (var processor in processors)
+            foreach (var processor in _processors)
             {
                 if (processor.CanProcess(id))
                 {
