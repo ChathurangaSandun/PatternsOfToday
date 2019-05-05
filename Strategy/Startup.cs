@@ -21,8 +21,9 @@ namespace Strategy
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddTransient<IPeopleRepository, PeopleRepository>();
             services.AddLogging();
+
+            services.AddTransient<IPeopleRepository, CachedPeopleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
